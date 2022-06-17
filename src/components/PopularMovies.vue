@@ -1,7 +1,8 @@
 <template>
-    <div class="header" v-if="searchMovie">
+    <div class="header">
+        <!-- <img :src="movie_image + movieDetails.poster_path" alt="" class="header-image"> -->
         <div class="pagination ">
-            <h1 class="header-text">Search results</h1>
+            <h1 class="header-text">MOST POPULAR MOVIES</h1>
             <ul>
                 <li class="prev-pagination" @click="prevPage"><i class="fa-solid fa-angle-left"></i></li>
                 <li class="page-number">Page {{ pageNumber }}</li>
@@ -9,7 +10,7 @@
             </ul>
         </div>
         <div class="text-white most-popular-movies">
-            <div class="movie-card" v-for="movie in searchMovieList" :key="movie.id" @click="searchSingleMovie(movie.id)">
+            <div class="movie-card" v-for="movie in mostPopularMovieList" :key="movie.id" @click="singleMovie(movie.id)">
                 <img :src="movie_image + movie.poster_path" alt="" class="movie-image">
                 <div class="overlay">
                     <p class="movie-rate">{{ movie.vote_average }}</p>
@@ -20,50 +21,67 @@
 </template>
 
 <script>
-import { mapState } from 'vuex'
+import axios from 'axios'
+import api from '@/assets/js/api.js'
 export default {
-    name: 'SearchMovie',
-    props: [
-        'searchMovieList'
-    ],
+    name: 'BigHeader',
     data() {
         return {
-            pageNumber: 1,
+            movieDetails: '',
+            api_key: 'e9c8d956b7d8cfbf6c128920d4c39493',
             movie_image: ' https://image.tmdb.org/t/p/original/',
-        }
-    },
-    computed: {
-        ...mapState({
-            count: state => state.count,
-            searchMovie: state => state.searchMovie
-        })
+            most_popular_movies: 'https://api.themoviedb.org/3/movie/popular?api_key=',
+            mostPopularMovieList: '',
+            pageNumber: 1
+        };
     },
     methods: {
-        searchSingleMovie(movieId){
+        singleMovie(movieId){
             this.$router.push('/single/movie/'+movieId)
         },
         prevPage() {
             if (this.pageNumber > 1) {
                 this.pageNumber--
-                this.$store.commit({
-                    type: 'decreaseSearchPageNumber'
-                })
-                this.$emit('searchPrevPage')
+                this.getLatestMovies()
             }
         },
         nextPage() {
             this.pageNumber++
-            this.$store.commit({
-                type: 'increaseSearchPageNumber'
-            })
-            this.$emit('searchNextPage')
-            // this.getLatestMovies()
+            this.getLatestMovies()
         },
+        // getSingleMovie() {
+        //     axios.get(`https://api.themoviedb.org/3/movie/76341?api_key=${this.api_key}`)
+        //         .then(res => {
+        //             this.movieDetails = res.data
+        //             console.log(res.data);
+        //         });
+        // },
+        getLatestMovies() {
+            axios.get(`${this.most_popular_movies + this.api_key + '&language=en-US&page=' +this.pageNumber}`)
+                .then(res => {
+                    this.mostPopularMovieList = res.data.results
+                })
+        }
+    },
+    mounted() {
+        // this.getSingleMovie();
+        this.getLatestMovies();
+
     },
 }
 </script>
 
 <style scoped>
+.header-image {
+    width: 100%;
+    height: 100%;
+}
+
+.header {
+    height: 100vh;
+    width: 100%;
+}
+
 .most-popular-movies {
     padding: 20px;
     display: flex;
@@ -166,12 +184,12 @@ export default {
 }
 
 @media only screen and (max-width: 992px) {
-    .movie-card {
+    .movie-card{
         width: 100%;
     }
-
-    .movie-card .movie-image {
+    .movie-card .movie-image{
         width: 100%;
     }
 }
+
 </style>

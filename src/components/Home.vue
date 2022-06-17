@@ -19,10 +19,15 @@
       </ul>
     </nav>
     <div class="search-results">
-      <SearchMovieVue :search-movie-list='searchResults' @searchPrevPage='searchPrevPage' @searchNextPage='searchNextPage'/>
+      <SearchMovieVue :search-movie-list='searchResults' @searchPrevPage='searchPrevPage'
+        @searchNextPage='searchNextPage' />
     </div>
+
     <div class="big-heading">
       <BigHeaderVue />
+    </div>
+    <div class="popular-movies">
+      <PopularMoviesVue />
     </div>
   </div>
 </template>
@@ -31,13 +36,14 @@
 import axios from 'axios'
 import BigHeaderVue from './Header/BigHeader.vue';
 import SearchMovieVue from './SearchMovie.vue';
+import PopularMoviesVue from './PopularMovies.vue';
 import { mapState } from 'vuex';
 export default {
   name: "Home",
-  emits:[
+  emits: [
     'searchNextPage', 'searchPrevPage'
   ],
-  components: { BigHeaderVue, SearchMovieVue },
+  components: { BigHeaderVue, SearchMovieVue, PopularMoviesVue },
   data() {
     return {
       movieName: '',
@@ -47,15 +53,15 @@ export default {
     }
   },
   methods: {
-    searchPrevPage(){
+    searchPrevPage() {
       this.movieSearch()
     },
-    searchNextPage(){
+    searchNextPage() {
       this.movieSearch()
     },
     movieSearch() {
       const serachUrl = 'https://api.themoviedb.org/3/search/movie?api_key='
-      axios.get(`${serachUrl + this.apiKey + '&query=' + this.movieName + '&page=' + this.searchPageNumber + '&include_adult=true'}`)
+      axios.get(`${serachUrl + this.apiKey + '&query=' + this.movieName + '&page=' + this.searchPageNumber + '&include_adult=false'}`)
         .then(res => {
           this.searchResults = res.data.results
           console.log(res);
@@ -69,7 +75,7 @@ export default {
   },
   computed: {
     ...mapState({
-      searchPageNumber: state=> state.searchPageNumber,
+      searchPageNumber: state => state.searchPageNumber,
     })
   },
 }
