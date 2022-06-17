@@ -10,10 +10,13 @@
             </ul>
         </div>
         <div class="text-white most-popular-movies">
-            <div class="movie-card" v-for="movie in mostPopularMovieList" :key="movie.id" @click="singleMovie(movie.id)">
+            <div class="movie-card" v-for="movie in mostPopularMovieList" :key="movie.id"
+                @click="singleMovie(movie.id)">
                 <img :src="movie_image + movie.poster_path" alt="" class="movie-image">
                 <div class="overlay">
-                    <p class="movie-rate">{{ movie.vote_average }}</p>
+                </div>
+                <div class="movie-rate">
+                    <i class="fa-solid fa-info"></i>
                 </div>
             </div>
         </div>
@@ -36,8 +39,8 @@ export default {
         };
     },
     methods: {
-        singleMovie(movieId){
-            this.$router.push('/single/movie/'+movieId)
+        singleMovie(movieId) {
+            this.$router.push('/single/movie/' + movieId)
         },
         prevPage() {
             if (this.pageNumber > 1) {
@@ -57,7 +60,7 @@ export default {
         //         });
         // },
         getLatestMovies() {
-            axios.get(`${this.most_popular_movies + this.api_key + '&language=en-US&page=' +this.pageNumber}`)
+            axios.get(`${this.most_popular_movies + this.api_key + '&language=en-US&page=' + this.pageNumber}`)
                 .then(res => {
                     this.mostPopularMovieList = res.data.results
                 })
@@ -96,7 +99,7 @@ export default {
 .movie-card .overlay {
     position: absolute;
     background-color: var(--theme-color-lightblue);
-    opacity: 0.3;
+    opacity: 0.6;
     top: 0;
     right: 0;
     left: 0;
@@ -115,16 +118,26 @@ export default {
     width: 100%;
     cursor: pointer;
 }
+.movie-card:hover .movie-rate {
+    opacity: 1;
+    cursor: pointer;
+}
 
-.movie-card .overlay .movie-rate {
+.movie-card .movie-rate {
     color: white;
     background-color: var(--theme-color-red);
-    width: 60px;
-    height: 60px;
+    width: 40px;
+    height: 40px;
     border-radius: 50%;
     display: flex;
     justify-content: center;
     align-items: center;
+    position: absolute;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+    opacity: 0;
+    transition: 0.3s ease;
 }
 
 .movie-card .movie-image {
@@ -184,12 +197,12 @@ export default {
 }
 
 @media only screen and (max-width: 992px) {
-    .movie-card{
+    .movie-card {
         width: 100%;
     }
-    .movie-card .movie-image{
+
+    .movie-card .movie-image {
         width: 100%;
     }
 }
-
 </style>

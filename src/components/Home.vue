@@ -18,14 +18,14 @@
         </li>
       </ul>
     </nav>
+    <div class="big-heading">
+      <BigHeaderVue @search-movie='searchMovie' />
+    </div>
     <div class="search-results">
       <SearchMovieVue :search-movie-list='searchResults' @searchPrevPage='searchPrevPage'
         @searchNextPage='searchNextPage' />
     </div>
 
-    <div class="big-heading">
-      <BigHeaderVue />
-    </div>
     <div class="popular-movies">
       <PopularMoviesVue />
     </div>
@@ -41,7 +41,7 @@ import { mapState } from 'vuex';
 export default {
   name: "Home",
   emits: [
-    'searchNextPage', 'searchPrevPage'
+    'searchNextPage', 'searchPrevPage', 'searchMovie'
   ],
   components: { BigHeaderVue, SearchMovieVue, PopularMoviesVue },
   data() {
@@ -53,6 +53,10 @@ export default {
     }
   },
   methods: {
+    searchMovie(movieTitle) {
+      this.movieName = movieTitle
+      this.movieSearch()
+    },
     searchPrevPage() {
       this.movieSearch()
     },
