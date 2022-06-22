@@ -26,14 +26,19 @@
         @searchNextPage='searchNextPage' />
     </div>
 
-    <div class="popular-movies">
+    <div class="popular-movies ">
       <PopularMoviesVue />
+    </div>
+
+    <div class="">
+      <Footer />
     </div>
   </div>
 </template>
 
 <script>
 import axios from 'axios'
+import Footer from './Footer.vue';
 import BigHeaderVue from './Header/BigHeader.vue';
 import SearchMovieVue from './SearchMovie.vue';
 import PopularMoviesVue from './PopularMovies.vue';
@@ -43,7 +48,7 @@ export default {
   emits: [
     'searchNextPage', 'searchPrevPage', 'searchMovie'
   ],
-  components: { BigHeaderVue, SearchMovieVue, PopularMoviesVue },
+  components: { BigHeaderVue, SearchMovieVue, PopularMoviesVue, Footer },
   data() {
     return {
       movieName: '',

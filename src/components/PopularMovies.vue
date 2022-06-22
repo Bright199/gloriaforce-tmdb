@@ -75,14 +75,10 @@ export default {
 </script>
 
 <style scoped>
-.header-image {
-    width: 100%;
-    height: 100%;
-}
 
 .header {
-    height: 100vh;
-    width: 100%;
+    /* height: 100vh;
+    width: 100%; */
 }
 
 .most-popular-movies {

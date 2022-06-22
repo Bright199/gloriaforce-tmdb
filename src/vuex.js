@@ -5,11 +5,15 @@ const store = createStore({
         return {
             count: 0,
             searchMovie: false,
-            searchPageNumber: 1
+            searchPageNumber: 1,
+            selectedDayIndex: 0
         }
     },
 
     mutations: {
+        setDayIndex(state, payload){
+            state.selectedDayIndex = payload.dayIndex
+        },
         setSearchMovie(state) {
             state.searchMovie = true
         },

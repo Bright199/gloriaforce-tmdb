@@ -58,82 +58,83 @@
                 <img :src="imageUrl + movie.poster_path" alt="">
             </div>
         </div>
-
+    <Footer/>
     </div>
 </template>
 
 <script>
 import axios from 'axios'
 import api from '../assets/js/api'
+import Footer from './Footer.vue'
 export default {
-    name: 'SingleMovie',
-    props: ['movieId'],
+    name: "SingleMovie",
+    props: ["movieId"],
     data() {
         return {
-            movieDetails: '',
-            whereToWatch: '',
-            similarMovies: '',
-
-        }
+            movieDetails: "",
+            whereToWatch: "",
+            similarMovies: "",
+        };
     },
     methods: {
         goToSingleMovie(movieId) {
-            this.$router.push('/single/movie/' + movieId)
+            this.$router.push("/single/movie/" + movieId);
             setTimeout(() => {
-                this.singleMovie()
-                this.getSimilarMovies()
+                this.singleMovie();
+                this.getSimilarMovies();
             }, 1000);
         },
         getWhereToWatch() {
-            const whereToWatchUrl = 'https://api.themoviedb.org/3/movie/' + this.movieId + '/watch/providers?api_key=' + api.api_key + '&language=en-US';
+            const whereToWatchUrl = "https://api.themoviedb.org/3/movie/" + this.movieId + "/watch/providers?api_key=" + api.api_key + "&language=en-US";
             axios.get(`${whereToWatchUrl}`)
                 .then(res => {
-                    this.whereToWatch = res.data.results
-                    console.log(res);
-                })
+                this.whereToWatch = res.data.results;
+                console.log(res);
+            })
                 .catch(error => {
-                    console.log(error);
-                })
+                console.log(error);
+            });
         },
         getSimilarMovies() {
-            const similarMovieUrl = 'https://api.themoviedb.org/3/movie/' + this.movieId + '/similar?api_key=' + api.api_key + '&language=en-US';
+            const similarMovieUrl = "https://api.themoviedb.org/3/movie/" + this.movieId + "/similar?api_key=" + api.api_key + "&language=en-US";
             axios.get(`${similarMovieUrl}`)
                 .then(res => {
-                    this.similarMovies = res.data.results
-                    console.log(res);
-                })
+                this.similarMovies = res.data.results;
+                console.log(res);
+            })
                 .catch(error => {
-                    console.log(error);
-                })
+                console.log(error);
+            });
         },
         singleMovie() {
-            const singleMovieUrl = 'https://api.themoviedb.org/3/movie/ ' + this.movieId + '?api_key=' + api.api_key + '&language=en-US'
+            const singleMovieUrl = "https://api.themoviedb.org/3/movie/ " + this.movieId + "?api_key=" + api.api_key + "&language=en-US";
             axios.get(`${singleMovieUrl}`)
                 .then(res => {
-                    this.movieDetails = res.data
-                })
+                this.movieDetails = res.data;
+            })
                 .catch(error => {
-                    console.log(error);
-                })
-
+                console.log(error);
+            });
         },
-
     },
     mounted() {
-        this.singleMovie()
-        this.getWhereToWatch()
-        this.getSimilarMovies()
+        this.singleMovie();
+        this.getWhereToWatch();
+        this.getSimilarMovies();
     },
-
     computed: {
         imageUrl() {
-            return api.movie_image
+            return api.movie_image;
         }
     },
+    components: { Footer }
 }
 </script>
 
 <style scoped>
+.large-screen-nav{
+    background-color: #000;
+}
 .movie-card {
     width: 250px;
     height: 300px;
